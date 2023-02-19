@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="939.0" prefWidth="1267.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.correopop3.ControllerCorreo">
+   <children>
+      <TableView fx:id="TableDisplay" layoutX="14.0" layoutY="91.0" prefHeight="639.0" prefWidth="266.0">
+        <columns>
+          <TableColumn fx:id="colFrom" prefWidth="103.0" text="From" />
+          <TableColumn fx:id="colSubject" prefWidth="161.0" text="Subject" />
+        </columns>
+      </TableView>
+      <TextArea fx:id="Display" layoutX="310.0" layoutY="91.0" prefHeight="639.0" prefWidth="582.0" />
+      <Button fx:id="btnConnect" layoutX="916.0" layoutY="91.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="104.0" text="CONNECT" />
+      <Button fx:id="btnFillTable" layoutX="14.0" layoutY="56.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Llenar tabla" />
+   </children>
+</Pane>
