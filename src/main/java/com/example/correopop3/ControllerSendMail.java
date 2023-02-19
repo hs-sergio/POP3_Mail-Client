@@ -59,10 +59,10 @@ public class ControllerSendMail implements Initializable {
 
                     String host = "smtp.gmail.com";
                     int port = 587;
-                    String username = "pruebasmtpcdm@gmail.com";
-                    String password = "pruebasmtp";
-                    char[] passwordChar = password.toCharArray();
 
+
+                    String username = "";
+                    String password = "";
                     Properties props = new Properties();
                     props.put("mail.smtp.auth", "true");
                     props.put("mail.smtp.starttls.enable", "true");
