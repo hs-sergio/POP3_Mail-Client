@@ -39,11 +39,12 @@ public class ControllerCorreo implements Initializable {
     private Button btnConnect;
     @FXML
     private Button btnFillTable;
+    @FXML
+    private Button btnNewMail;
 
     POP3Client pop3 = new POP3Client();
 
     List<MensajeTablaDatos> tablaDatos = new ArrayList<>(); // Inicializamos la lista de datos de la tabla
-
 
 
     public void ConnectAndGetData() throws IOException {
@@ -129,12 +130,9 @@ public class ControllerCorreo implements Initializable {
             char[] contenido = new char[contentLength];
             int charLeidos = mensajeReader.read(contenido, 0, contentLength);
 
-            Display.appendText(from + "\n" + subject + "\n" + date + "\n\n" + contentBuilder.toString());
-
-
 
             // Añadimos a la clase MensajeTablaDatos los datos del from y el subject
-            MensajeTablaDatos mensajeTablaDatos = new MensajeTablaDatos(from, subject);
+            MensajeTablaDatos mensajeTablaDatos = new MensajeTablaDatos(from, subject, contentBuilder.toString());
             tablaDatos.add(mensajeTablaDatos);
 
 
@@ -183,16 +181,32 @@ public class ControllerCorreo implements Initializable {
             }
         });
 
+        // agregar el EventHandler para cuando se seleccione una fila de la tabla
+        TableDisplay.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+
+                String from = newSelection.getFrom();
+                String subject = newSelection.getSubject();
+                String mensaje = newSelection.getMensaje();
+
+                String mensajeCompleto = "From: " + from + "\nSubject: " + subject + "\n\nMENSAJE: " + mensaje;
+                Display.setText("");
+                Display.appendText(mensajeCompleto);
+
+            }
+        });
     }
 
 
     public class MensajeTablaDatos {
         private String from;
         private String subject;
+        private String mensaje;
 
-        public MensajeTablaDatos(String from, String subject) {
+        public MensajeTablaDatos(String from, String subject, String mensaje) {
             this.from = from;
             this.subject = subject;
+            this.mensaje = mensaje;
         }
 
         public String getFrom() {
@@ -209,6 +223,14 @@ public class ControllerCorreo implements Initializable {
 
         public void setSubject(String subject) {
             this.subject = subject;
+        }
+
+        public String getMensaje() {
+            return mensaje;
+        }
+
+        public void setMensaje(String mensaje) {
+            this.mensaje = mensaje;
         }
     }
 }
