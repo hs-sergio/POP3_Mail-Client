@@ -19,5 +19,6 @@
       <Button fx:id="btnConnect" layoutX="1088.0" layoutY="91.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="104.0" text="CONNECT" />
       <Button fx:id="btnFillTable" layoutX="14.0" layoutY="56.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Llenar tabla" />
       <Button fx:id="btnNewMail" layoutX="396.0" layoutY="40.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="114.0" text="NUEVO CORREO" />
+      <Button fx:id="btnBorrar" layoutX="1088.0" layoutY="151.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="104.0" text="BORRAR" />
    </children>
 </Pane>

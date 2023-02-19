@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="761.0" prefWidth="594.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.correopop3.ControllerSendMail">
+   <children>
+      <Label layoutX="68.0" layoutY="73.0" prefHeight="17.0" prefWidth="107.0" text="FROM: " />
+      <Label layoutX="68.0" layoutY="136.0" prefHeight="17.0" prefWidth="107.0" text="TO:" />
+      <TextField fx:id="txtTo" layoutX="68.0" layoutY="163.0" prefHeight="25.0" prefWidth="220.0" />
+      <Label layoutX="68.0" layoutY="208.0" prefHeight="17.0" prefWidth="107.0" text="SUBJECT: " />
+      <TextField fx:id="txtSubject" layoutX="68.0" layoutY="234.0" prefHeight="25.0" prefWidth="220.0" />
+      <Label layoutX="68.0" layoutY="299.0" prefHeight="17.0" prefWidth="107.0" text="MESSAGE:" />
+      <TextArea fx:id="txtMensaje" layoutX="68.0" layoutY="325.0" prefHeight="320.0" prefWidth="450.0" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextArea>
+      <Button fx:id="btnSend" layoutX="428.0" layoutY="671.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="84.0" text="SEND" />
+      <Button fx:id="btnClear" layoutX="319.0" layoutY="671.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="84.0" text="CLEAR" />
+      <Label fx:id="txtFrom" layoutX="68.0" layoutY="90.0" prefHeight="17.0" prefWidth="220.0" />
+   </children>
+</AnchorPane>

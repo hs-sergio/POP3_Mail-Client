@@ -5,7 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import java.io.BufferedReader;
@@ -19,6 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import org.apache.commons.net.pop3.POP3Client;
 import org.apache.commons.net.pop3.POP3MessageInfo;
 
@@ -40,18 +44,23 @@ public class ControllerCorreo implements Initializable {
     @FXML
     private Button btnFillTable;
     @FXML
+    private Button btnBorrar;
+    @FXML
     private Button btnNewMail;
 
     POP3Client pop3 = new POP3Client();
 
     List<MensajeTablaDatos> tablaDatos = new ArrayList<>(); // Inicializamos la lista de datos de la tabla
 
+    public static String loginName = "clientecachibache@damiansu.com";
+    private String pass = "Grupocdmfp2023";
+
 
     public void ConnectAndGetData() throws IOException {
         pop3.connect("mail.damiansu.com");
         System.out.println("NOS HEMOS CONECTADO");
 
-        if (!pop3.login("clientecachibache@damiansu.com", "Grupocdmfp2023")) {
+        if (!pop3.login(loginName, pass)) {
             System.out.println("FALLO EN EL LOGIN");
         } else {
             System.out.println("ESTAMOS LOGEADOS");
@@ -132,7 +141,7 @@ public class ControllerCorreo implements Initializable {
 
 
             // Añadimos a la clase MensajeTablaDatos los datos del from y el subject
-            MensajeTablaDatos mensajeTablaDatos = new MensajeTablaDatos(from, subject, contentBuilder.toString());
+            MensajeTablaDatos mensajeTablaDatos = new MensajeTablaDatos(from, subject, contentBuilder.toString(), mensaje.number);
             tablaDatos.add(mensajeTablaDatos);
 
 
@@ -149,6 +158,29 @@ public class ControllerCorreo implements Initializable {
 
     }
 
+    public void deleteMessage(){
+        // Obtenemos el indice del mensaje seleccionado de la tabla
+        int selectedIndex = TableDisplay.getSelectionModel().getSelectedIndex();
+        // Obtenemos el objeto correspondiente al mensaje seleccionado
+        MensajeTablaDatos mensajeSeleccionado = TableDisplay.getItems().get(selectedIndex);
+        // Obtenemos el numero de mensaje del objeto MimeMessage del mensaje seleccionado
+        int NumMensaje = mensajeSeleccionado.getNumMensaje();
+        System.out.println(NumMensaje);
+
+        try {
+            pop3.deleteMessage(NumMensaje-1);
+            tablaDatos.remove(mensajeSeleccionado);
+            TableDisplay.refresh();
+            if(pop3.deleteMessage(NumMensaje)){
+                System.out.println("MENSAJE ELIMINADO");
+            }else{
+                System.out.println("NO SE HA ELIMINADO EL MENSAJE");
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -195,6 +227,36 @@ public class ControllerCorreo implements Initializable {
 
             }
         });
+
+        btnBorrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                deleteMessage();
+            }
+        });
+
+        btnNewMail.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                // Abrir un formulario para mandar un correo a alguien
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("GUI_SendMail.fxml"));
+                try {
+                    Parent root = loader.load();
+                    // Crear nueva ventana
+                    Stage stage = new Stage();
+                    stage.setTitle("ENVIAR MAIL");
+                    stage.setScene(new Scene(root));
+
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
     }
 
 
@@ -202,11 +264,13 @@ public class ControllerCorreo implements Initializable {
         private String from;
         private String subject;
         private String mensaje;
+        private int numMensaje;
 
-        public MensajeTablaDatos(String from, String subject, String mensaje) {
+        public MensajeTablaDatos(String from, String subject, String mensaje, int numMensaje) {
             this.from = from;
             this.subject = subject;
             this.mensaje = mensaje;
+            this.numMensaje = numMensaje;
         }
 
         public String getFrom() {
@@ -231,6 +295,14 @@ public class ControllerCorreo implements Initializable {
 
         public void setMensaje(String mensaje) {
             this.mensaje = mensaje;
+        }
+
+        public int getNumMensaje() {
+            return numMensaje;
+        }
+
+        public void setNumMensaje(int numMensaje) {
+            this.numMensaje = numMensaje;
         }
     }
 }
