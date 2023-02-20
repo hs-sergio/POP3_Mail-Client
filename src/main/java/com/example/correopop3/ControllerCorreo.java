@@ -47,6 +47,8 @@ public class ControllerCorreo implements Initializable {
     private Button btnBorrar;
     @FXML
     private Button btnNewMail;
+    @FXML
+    private Button btnRefresh;
 
     POP3Client pop3 = new POP3Client();
 
@@ -70,6 +72,10 @@ public class ControllerCorreo implements Initializable {
 
     }
 
+
+    public void refreshTable(){
+        TableDisplay.refresh();
+    }
 
     public void fillTable() throws IOException {
         // Almacenamos los mensajes en un array
@@ -253,6 +259,13 @@ public class ControllerCorreo implements Initializable {
                     e.printStackTrace();
                 }
 
+            }
+        });
+
+        btnRefresh.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                refreshTable();
             }
         });
 

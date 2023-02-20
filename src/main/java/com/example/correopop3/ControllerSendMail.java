@@ -41,6 +41,13 @@ public class ControllerSendMail implements Initializable {
 
         txtFrom.setText(ControllerCorreo.loginName);
 
+        btnClear.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                clearAll();
+            }
+        });
+
         btnSend.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -60,27 +67,31 @@ public class ControllerSendMail implements Initializable {
                     String host = "smtp.gmail.com";
                     int port = 587;
 
-
-                    String username = "";
-                    String password = "";
+                    String username = "gilnietosergio@gmail.com";
+                    String password = "eflspnuitmmfeqyv";
                     Properties props = new Properties();
-                    props.put("mail.smtp.auth", "true");
-                    props.put("mail.smtp.starttls.enable", "true");
                     props.put("mail.smtp.host", host);
-                    props.put("mail.smtp.port", port);
+                    props.put("mail.smtp.port", port); // TLS Port
+                    props.put("mail.smtp.auth", "true"); // Enable autentification
+                    props.put("mail.smtp.starttls.enable", "true"); // enable StartTLS
 
-                    Session session = Session.getInstance(props, new Authenticator() {
+
+                    Session session = Session.getDefaultInstance(props, new Authenticator() {
+                        @Override
                         protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
                             return new javax.mail.PasswordAuthentication(username, password);
                         }
                     });
 
+
+
                     try{
                         Message message = new MimeMessage(session);
-                        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(To));
-                        message.setSubject(subject);
-                        message.setText(mensaje);
-                        Transport.send(message);
+                        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(To)); // A quien se lo vamos a enviar
+                        message.setSubject(subject); // Pasamos el subject
+                        message.setText(mensaje); // Pasamos el mensaje
+                        System.out.println("Enviando...");
+                        Transport.send(message); //
                         System.out.println("Correo electrónico enviado correctamente.");
                     }catch (MessagingException e){
                         e.printStackTrace();
@@ -92,4 +103,11 @@ public class ControllerSendMail implements Initializable {
         });
 
     }
+
+    private void clearAll(){
+        txtMensaje.setText("");
+        txtSubject.setText("");
+        txtTo.setText("");
+    }
+
 }
